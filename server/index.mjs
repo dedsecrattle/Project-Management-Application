@@ -1,8 +1,8 @@
 import express, { response } from 'express'
 import dotenv from "dotenv";
 import cors from 'cors'
-import { createHandler } from 'graphql-http';
-import schema from './schema/schema.mjs';
+import { createHandler } from 'graphql-http/lib/use/express';
+import rootSchema from './schema/schema.mjs'
 
 dotenv.config();
 
@@ -10,16 +10,10 @@ const PORT = process.env.PORT || 5000
 
 const app = express()
 
-app.all('/graphql', createHandler({ schema }));
-
 app.use(cors())
 
-app.get("/", (request, response) =>{
-    response.send("Welcome to Project Management GraphQL API!")
-})
+app.all('/graphql', createHandler({ schema: rootSchema }));
 
 
-
-app.listen(PORT, ()=>{
-    console.log(`Server Started ${PORT}`)
-})
+app.listen({ port: PORT});
+console.log('Listening to port 4000');
