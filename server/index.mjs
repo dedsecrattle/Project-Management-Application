@@ -14,12 +14,6 @@ app.all('/graphql', createHandler({ schema }));
 
 app.use(cors())
 
-
-// app.use('/graphql', graphqlHTTP({
-//     schema: require('./graphql/schema'),
-//     graphiql: true,
-// }))
-
 app.get("/", (request, response) =>{
     response.send("Welcome to Project Management GraphQL API!")
 })
