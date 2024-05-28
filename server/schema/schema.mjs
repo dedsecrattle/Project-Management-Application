@@ -74,13 +74,14 @@ const mutation = new GraphQLObjectType({
         phone: { type: GraphQLNonNull(GraphQLString) },
       },
       resolve(parent, args) {
-        const client = new Client({
+        const client = {
+          id: length(clients),
           name: args.name,
           email: args.email,
           phone: args.phone,
-        });
+        }
 
-        return client.save();
+        return clients.push(client);
       },
     },
     // Delete a client
@@ -96,7 +97,9 @@ const mutation = new GraphQLObjectType({
           });
         });
 
-        return Client.findByIdAndRemove(args.id);
+        return clients.filter((client) => {
+          client.id != args.id
+        });
       },
     },
     // Add a project
@@ -119,14 +122,14 @@ const mutation = new GraphQLObjectType({
         clientId: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
-        const project = new Project({
+        const project = {
           name: args.name,
           description: args.description,
           status: args.status,
           clientId: args.clientId,
-        });
+        };
 
-        return project.save();
+        return projects.push(project);
       },
     },
     // Delete a project
@@ -136,7 +139,7 @@ const mutation = new GraphQLObjectType({
         id: { type: GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args) {
-        return Project.findByIdAndRemove(args.id);
+        return projects.filter((project) => project.id != args.id);
       },
     },
     // Update a project
@@ -175,6 +178,6 @@ const mutation = new GraphQLObjectType({
 });
 
 
-export default rootSchema =  GraphQLSchema({
-  query: RootQuery,
+export const rootSchema = new GraphQLSchema({
+  query: RootQuery
 })

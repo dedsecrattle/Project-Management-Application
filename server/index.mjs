@@ -2,7 +2,11 @@ import express, { response } from 'express'
 import dotenv from "dotenv";
 import cors from 'cors'
 import { createHandler } from 'graphql-http/lib/use/express';
-import rootSchema from './schema/schema.mjs'
+import {rootSchema} from './schema/schema.mjs'
+import { Mongoose } from 'mongoose';
+
+
+Mongoose.
 
 dotenv.config();
 
@@ -12,7 +16,7 @@ const app = express()
 
 app.use(cors())
 
-app.all('/graphql', createHandler({ schema: rootSchema }));
+app.all('/graphql', createHandler({schema: rootSchema}));
 
 
 app.listen({ port: PORT});
